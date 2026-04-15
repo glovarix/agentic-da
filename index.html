@@ -188,6 +188,9 @@
     }
     .hero .container { position: relative; z-index: 1; }
 
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 6px 16px; border-radius: 999px;
@@ -528,9 +531,13 @@
   <section class="hero">
     <div class="hero-glow"></div>
     <div class="container">
-      <div class="hero-badge">
-        <div class="hero-badge-dot"></div>
-        Darcy — AI-native data analyst, built for Claude Code
+      <div class="hero-badges">
+        <div class="hero-badge">
+          <div class="hero-badge-dot"></div>
+          Darcy — AI-native data analyst
+        </div>
+        <div class="hero-badge">for your data</div>
+        <div class="hero-badge">built for Claude Code</div>
       </div>
       <h1>Meet Darcy.<br><span class="accent">Your AI-native data analyst.</span></h1>
       <p class="hero-sub">
