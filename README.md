@@ -1,6 +1,8 @@
-# Agentic Data Preparation Framework
+# Meet Darcy.
 
-A local-first, file-in file-out framework for data cleaning, standardization, linkage, and master-list building. Drop it into any repo, point your AI coding tool at `CLAUDE.md`, and give it messy source files plus a prep goal. The agent inspects local files first, cleans and aligns the data, and saves outputs to `outputs/` — nothing leaves your machine unless you ask it to.
+Your AI-native data analyst.
+
+Drop in messy source files, tell Darcy what you need, and get clean production-ready CSV and XLSX outputs back on your machine. Darcy inspects local files first, cleans and aligns the data, and saves outputs to `outputs/` — nothing leaves your machine unless you ask.
 
 Built for situations where the real work is cleaning data, aligning schemas, deduplicating records, and making multiple sources link cleanly through codes, names, or identifiers.
 
@@ -28,7 +30,7 @@ No forms. No setup scripts. Just local files and clear prompts.
 
 ## Capabilities
 
-Full capability list lives in `capabilities/capabilities.csv`.
+Full capability list lives in `capabilities/capabilities.csv`. Need something not listed? Add a new row — Darcy picks it up on the next job, no code required.
 
 | Category | What it covers |
 | --- | --- |

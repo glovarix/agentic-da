@@ -1,4 +1,4 @@
-# Agentic Data Preparation Framework - Agent Instructions
+# Darcy — Agent Instructions
 
 ## Preferences
 
