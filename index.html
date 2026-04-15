@@ -799,6 +799,11 @@
           </tr>
           <tr>
             <td>Any job</td>
+            <td>Dropped records file</td>
+            <td><span class="path">outputs/discarded/</span></td>
+          </tr>
+          <tr>
+            <td>Any job</td>
             <td>Sanity check report</td>
             <td><span class="path">outputs/reports/</span></td>
           </tr>
@@ -869,15 +874,16 @@
 │   └── {project}/
 │       ├── source_file.csv
 │       └── source_file_v1.csv
-├── <span class="t-green">workspace/</span>              <span class="t-dim">← staging area, copy data/ files here</span>
-│   ├── working/            <span class="t-dim">← active files being processed</span>
-│   └── reference/          <span class="t-dim">← lookup tables and supporting files</span>
-├── <span class="t-green">outputs/</span>                <span class="t-dim">← created by the agent on first job run</span>
+├── <span class="t-green">workspace/</span>              <span class="t-dim">← Darcy copies data/ files here automatically</span>
+│   ├── working/            <span class="t-dim">← intermediate outputs, inspectable before confirmation</span>
+│   └── reference/          <span class="t-dim">← source lookups used to inform the job</span>
+├── <span class="t-green">outputs/</span>                <span class="t-dim">← confirmed, reviewed files only</span>
 │   ├── cleaned/            <span class="t-dim">← created when a cleaning job runs</span>
 │   ├── master-lists/       <span class="t-dim">← created when a master list job runs</span>
 │   ├── mappings/           <span class="t-dim">← created when a mapping job runs</span>
 │   ├── qa/                 <span class="t-dim">← created when a QA job runs</span>
-│   └── reports/            <span class="t-dim">← created on every job</span>
+│   ├── discarded/          <span class="t-dim">← dropped records, every job, never silent</span>
+│   └── reports/            <span class="t-dim">← sanity check report, every job</span>
 ├── standards.md            <span class="t-dim">← naming and code standards</span>
 ├── CLAUDE.md               <span class="t-dim">← agent instructions</span>
 └── preferences.json        <span class="t-dim">← behaviour toggles</span>
@@ -899,11 +905,11 @@
             </tr>
             <tr>
               <td><span class="path">workspace/working/</span></td>
-              <td>Active copies of source files being cleaned or processed.</td>
+              <td>Intermediate outputs written during processing — inspectable before anything is confirmed to outputs/.</td>
             </tr>
             <tr>
               <td><span class="path">workspace/reference/</span></td>
-              <td>Lookup tables, code lists, and supporting files that inform the work but are not being cleaned.</td>
+              <td>Source files copied from data/ and used as lookups to inform the job — not being cleaned themselves.</td>
             </tr>
             <tr>
               <td><span class="path">context/instructions/</span></td>
@@ -916,6 +922,10 @@
             <tr>
               <td><span class="path">outputs/</span></td>
               <td>Confirmed, reviewed files only. Subfolders are created by the agent when a job runs.</td>
+            </tr>
+            <tr>
+              <td><span class="path">outputs/discarded/</span></td>
+              <td>Records dropped during every job — no identifier, failed validation, or unresolvable conflict. Never silently lost.</td>
             </tr>
             <tr>
               <td><span class="path">standards.md</span></td>

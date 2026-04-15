@@ -131,6 +131,7 @@ Save all outputs under `outputs/`. The subfolder and filename are determined by 
 | Master list | `master-lists/` | `{slug}-master.csv` or `.xlsx` |
 | Mapping or link table | `mappings/` | `{slug}-map.csv` |
 | QA or review file | `qa/` | `{slug}-qa.csv` or `.xlsx` |
+| Discarded records | `discarded/` | `{slug}-discarded_{date}.csv` |
 | Sanity check report | `reports/` | `{slug}-report_{date}.md` |
 
 Prefer CSV by default. Use XLSX when multiple tabs or stakeholder-friendly formatting is useful.
@@ -154,8 +155,10 @@ When `commitOutputs` is set back to `false`, restore the ignore rule. `data/` an
 
 ## Rule 8: Workspace and data flow
 
-- `data/` holds source files. Never modify them. Automatically copy the relevant files into `workspace/working/` before any processing — the user should not need to do this manually.
-- `workspace/` is a staging area. Use `workspace/working/` for active processing files and `workspace/reference/` for lookup tables, code lists, or supporting files that inform the work but are not being cleaned themselves.
+- `data/` holds source files. Never modify them. Automatically copy source files into `workspace/` before any processing — the user should not need to do this manually.
+- Copy source files being used as reference lookups into `workspace/reference/`. Copy files being actively cleaned or transformed into `workspace/working/`.
+- Write all intermediate outputs (raw registries, working joins, pre-elevation files) to `workspace/working/` so the intermediate state is inspectable before anything is confirmed.
+- Records dropped during processing — no identifier, failed validation, unresolvable conflicts — must be written to `outputs/discarded/` as `{slug}-discarded_{date}.csv`. Never silently drop rows without a file.
 - Do not elevate files from `workspace/` to `outputs/` without explicit user confirmation.
 - If a user wants to re-run a flow, copy fresh files from `data/` into `workspace/` and re-process from there.
 - `outputs/` is the reviewed, confirmed layer only.

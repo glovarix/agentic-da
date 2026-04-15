@@ -68,6 +68,7 @@ your-repo/
 │   ├── master-lists/            <- created when a master list job runs
 │   ├── mappings/                <- created when a mapping job runs
 │   ├── qa/                      <- created when a QA job runs
+│   ├── discarded/               <- records dropped every job (no identifier, failed validation)
 │   └── reports/                 <- created on every job (sanity check report)
 ├── standards.md                 <- naming, code, and linkage standards
 ├── CLAUDE.md                    <- agent instructions
@@ -85,21 +86,25 @@ your-repo/
 | `context/instructions/` | One Markdown file per project defining prep rules, match logic, and standards for that domain. |
 | `capabilities/` | The master list of supported prep operations. Generic and reusable across all projects. |
 | `outputs/` | Confirmed, reviewed files only. Subfolders are created by the agent when a job runs. |
+| `outputs/discarded/` | Records dropped during processing — no identifier, failed validation, or unresolvable conflicts. |
 | `standards.md` | Cross-project defaults for naming, codes, entity matching, and date formats. |
 | `preferences.json` | Behavioural toggles — controls confirmations, commits, sanity checks, and language. |
 
 ## Data flow
 
 ```text
-data/          →   workspace/working/   →   outputs/
-(untouched)        (staging, active)        (reviewed and confirmed only)
+data/              →   workspace/reference/    (source lookups, untouched)
+                   →   workspace/working/      (intermediate outputs)
+                   →   outputs/                (reviewed and confirmed only)
 ```
 
-- Files in `data/` are never modified. Copy them into `workspace/` before processing.
-- `workspace/` is the staging layer. All intermediate files live here.
+- Files in `data/` are never modified. Darcy copies them into `workspace/` automatically.
+- Source files used as lookups go to `workspace/reference/`. Files being actively processed go to `workspace/working/`.
+- All intermediate outputs are written to `workspace/working/` so the state is inspectable before anything is confirmed.
+- Records dropped during processing are always written to `outputs/discarded/` — nothing is silently lost.
 - Files are only moved to `outputs/` after explicit user review and approval.
 - Output subfolders are created by the agent when a job runs — nothing is pre-built.
-- Every job produces a report in `outputs/reports/` recording what was reviewed, what changed, what files were written, and which source versions were used.
+- Every job produces a sanity check report in `outputs/reports/`.
 
 ## Versioning
 
