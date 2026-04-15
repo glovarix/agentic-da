@@ -489,6 +489,7 @@
       <a href="#instructions">Instructions</a>
       <a href="#outputs">Outputs</a>
       <a href="#structure">Structure</a>
+      <a href="#preferences">Preferences</a>
     </div>
 
     <div class="nav-actions">
@@ -884,6 +885,7 @@
 │   ├── qa/                 <span class="t-dim">← created when a QA job runs</span>
 │   ├── discarded/          <span class="t-dim">← dropped records, every job, never silent</span>
 │   └── reports/            <span class="t-dim">← sanity check report, every job</span>
+├── <span class="t-green">scripts/</span>                <span class="t-dim">← processing scripts written by Darcy</span>
 ├── standards.md            <span class="t-dim">← naming and code standards</span>
 ├── CLAUDE.md               <span class="t-dim">← agent instructions</span>
 └── preferences.json        <span class="t-dim">← behaviour toggles</span>
@@ -905,11 +907,15 @@
             </tr>
             <tr>
               <td><span class="path">workspace/working/</span></td>
-              <td>Intermediate outputs written during processing — inspectable before anything is confirmed to outputs/.</td>
+              <td>Intermediate outputs written during processing — inspectable before anything is elevated to outputs/.</td>
             </tr>
             <tr>
               <td><span class="path">workspace/reference/</span></td>
               <td>Source files copied from data/ and used as lookups to inform the job — not being cleaned themselves.</td>
+            </tr>
+            <tr>
+              <td><span class="path">scripts/</span></td>
+              <td>Processing scripts written by Darcy when a job requires code. Controlled by commitScripts in preferences.</td>
             </tr>
             <tr>
               <td><span class="path">context/instructions/</span></td>
@@ -937,6 +943,93 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PREFERENCES ── -->
+  <section id="preferences" class="alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Preferences</div>
+        <h2>All behaviour is configurable.</h2>
+        <p class="section-sub">Every toggle lives in <code style="font-family:monospace;font-size:14px">preferences.json</code>. Darcy reads it at the start of every session. Change a setting and the behaviour changes — no code required.</p>
+      </div>
+
+      <table class="output-table">
+        <thead>
+          <tr>
+            <th>Setting</th>
+            <th>Default</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="path">commitOutputs</span></td>
+            <td>false</td>
+            <td>Allow files in outputs/ to be committed to git.</td>
+          </tr>
+          <tr>
+            <td><span class="path">commitWorkspace</span></td>
+            <td>false</td>
+            <td>Allow files in workspace/ to be committed to git.</td>
+          </tr>
+          <tr>
+            <td><span class="path">commitContext</span></td>
+            <td>false</td>
+            <td>Allow files in context/ to be committed to git.</td>
+          </tr>
+          <tr>
+            <td><span class="path">commitScripts</span></td>
+            <td>false</td>
+            <td>Allow files in scripts/ to be committed to git.</td>
+          </tr>
+          <tr>
+            <td><span class="path">pushAfterCommit</span></td>
+            <td>false</td>
+            <td>Push to remote automatically after every commit.</td>
+          </tr>
+          <tr>
+            <td><span class="path">confirmBeforeSave</span></td>
+            <td>true</td>
+            <td>Ask before writing any output file.</td>
+          </tr>
+          <tr>
+            <td><span class="path">confirmBeforeCommit</span></td>
+            <td>true</td>
+            <td>Ask before committing.</td>
+          </tr>
+          <tr>
+            <td><span class="path">confirmBeforeGenerate</span></td>
+            <td>true</td>
+            <td>Ask for confirmation when the request is ambiguous.</td>
+          </tr>
+          <tr>
+            <td><span class="path">runEvidenceCheck</span></td>
+            <td>true</td>
+            <td>Inspect data/, workspace/, and context files before starting any job.</td>
+          </tr>
+          <tr>
+            <td><span class="path">includeSanityCheck</span></td>
+            <td>true</td>
+            <td>Write a sanity check report to outputs/reports/ after every job.</td>
+          </tr>
+          <tr>
+            <td><span class="path">updateSourceRegistry</span></td>
+            <td>true</td>
+            <td>Offer to update standards.md when new source rules appear.</td>
+          </tr>
+          <tr>
+            <td><span class="path">language</span></td>
+            <td>"en-US"</td>
+            <td>Writing language for outputs. Supports "en-US" and "en-GB".</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:24px; padding:16px 24px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+        When a <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">commit*</code> setting is changed to <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">true</code>, Darcy updates <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">.gitignore</code> automatically to unignore that folder. <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">data/</code> is always ignored regardless of any setting.
       </div>
     </div>
   </section>

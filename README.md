@@ -70,6 +70,7 @@ your-repo/
 │   ├── qa/                      <- created when a QA job runs
 │   ├── discarded/               <- records dropped every job (no identifier, failed validation)
 │   └── reports/                 <- created on every job (sanity check report)
+├── scripts/                     <- processing scripts written by Darcy
 ├── standards.md                 <- naming, code, and linkage standards
 ├── CLAUDE.md                    <- agent instructions
 ├── preferences.json             <- behaviour toggles
@@ -81,14 +82,36 @@ your-repo/
 | Folder | What goes in it |
 | --- | --- |
 | `data/` | Original source files, organised by project subfolder. Never modified directly. |
-| `workspace/working/` | Active copies of source files being cleaned or processed. |
-| `workspace/reference/` | Lookup tables, code lists, and supporting files that inform the work but are not being cleaned. |
+| `workspace/working/` | Intermediate outputs written during processing. Inspectable before anything is elevated to `outputs/`. |
+| `workspace/reference/` | Source files copied from `data/` and used as lookups to inform the job — not being cleaned themselves. |
 | `context/instructions/` | One Markdown file per project defining prep rules, match logic, and standards for that domain. |
 | `capabilities/` | The master list of supported prep operations. Generic and reusable across all projects. |
+| `scripts/` | Processing scripts written by Darcy when a job requires code. Controlled by `commitScripts` in preferences. |
 | `outputs/` | Confirmed, reviewed files only. Subfolders are created by the agent when a job runs. |
-| `outputs/discarded/` | Records dropped during processing — no identifier, failed validation, or unresolvable conflicts. |
+| `outputs/discarded/` | Records dropped during every job — no identifier, failed validation, or unresolvable conflict. Never silently lost. |
 | `standards.md` | Cross-project defaults for naming, codes, entity matching, and date formats. |
-| `preferences.json` | Behavioural toggles — controls confirmations, commits, sanity checks, and language. |
+| `preferences.json` | Behavioural toggles — controls what Darcy confirms, commits, and writes. See Preferences below. |
+
+## Preferences
+
+All behaviour toggles live in `preferences.json`. Darcy reads this file at the start of every session.
+
+| Setting | Default | What it does |
+| --- | --- | --- |
+| `commitOutputs` | `false` | Allow files in `outputs/` to be committed to git. |
+| `commitWorkspace` | `false` | Allow files in `workspace/` to be committed to git. |
+| `commitContext` | `false` | Allow files in `context/` to be committed to git. |
+| `commitScripts` | `false` | Allow files in `scripts/` to be committed to git. |
+| `pushAfterCommit` | `false` | Push to remote automatically after every commit. |
+| `confirmBeforeSave` | `true` | Ask before writing any output file. |
+| `confirmBeforeCommit` | `true` | Ask before committing. |
+| `confirmBeforeGenerate` | `true` | Ask for confirmation when the request is ambiguous. |
+| `runEvidenceCheck` | `true` | Inspect `data/`, `workspace/`, and context files before starting any job. |
+| `includeSanityCheck` | `true` | Write a sanity check report to `outputs/reports/` after every job. |
+| `updateSourceRegistry` | `true` | Offer to update `standards.md` when new source rules appear. |
+| `language` | `"en-US"` | Writing language for outputs. Supports `"en-US"` and `"en-GB"`. |
+
+When a `commit*` setting is changed to `true`, Darcy updates `.gitignore` automatically to unignore that folder. `data/` is always ignored regardless of any setting.
 
 ## Data flow
 
