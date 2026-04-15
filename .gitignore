@@ -23,17 +23,18 @@ node_modules/
 # Logs
 *.log
 
-# Project data — ignored by default
-# Set commitOutputs = true in preferences.json and Darcy will update this file
+# Project data — always ignored, never committed
 data/**
 !data/.gitkeep
 
+# Controlled by preferences.json — Darcy updates this file when settings change
 context/**
 !context/instructions/.gitkeep
 
 outputs/**
 !outputs/.gitkeep
 
-# Workspace staging files are always local
 workspace/working/**
 workspace/reference/**
+
+scripts/**

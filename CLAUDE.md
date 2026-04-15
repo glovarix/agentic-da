@@ -6,7 +6,10 @@ At the start of every session, read `preferences.json` from the project root and
 
 | Key | Default | Behaviour |
 | --- | --- | --- |
-| `commitOutputs` | `false` | `true` means generated output files may be committed to git. `false` means keep them local-only unless the user explicitly asks otherwise. |
+| `commitOutputs` | `false` | `true` means files in `outputs/` may be committed to git. |
+| `commitWorkspace` | `false` | `true` means files in `workspace/` may be committed to git. |
+| `commitContext` | `false` | `true` means files in `context/` may be committed to git. |
+| `commitScripts` | `false` | `true` means files in `scripts/` may be committed to git. |
 | `pushAfterCommit` | `false` | `true` means push after each commit. `false` means never push unless asked. |
 | `confirmBeforeSave` | `true` | Ask before saving output files. |
 | `confirmBeforeCommit` | `true` | Ask before committing. |
@@ -144,14 +147,16 @@ Prefer CSV by default. Use XLSX when multiple tabs or stakeholder-friendly forma
 
 ### .gitignore sync
 
-`data/`, `context/`, and `outputs/` are ignored by default — no project data leaves the machine unless explicitly enabled.
+`data/`, `context/`, `workspace/`, and `outputs/` are ignored by default. When a setting is changed to `true` in `preferences.json`, update `.gitignore` to unignore the corresponding folder. When set back to `false`, restore the ignore rule.
 
-When `commitOutputs` is changed to `true` in `preferences.json`, update `.gitignore` to unignore `outputs/`:
+| Setting | Controls | .gitignore line to remove when `true` |
+| --- | --- | --- |
+| `commitOutputs` | `outputs/` | `outputs/**` |
+| `commitWorkspace` | `workspace/` | `workspace/working/**` and `workspace/reference/**` |
+| `commitContext` | `context/` | `context/**` |
+| `commitScripts` | `scripts/` | `scripts/**` |
 
-- Remove or comment out the `outputs/**` line
-- Add `!outputs/**` if needed to negate a parent rule
-
-When `commitOutputs` is set back to `false`, restore the ignore rule. `data/` and `context/` are always ignored regardless of preferences — never remove those rules.
+`data/` is always ignored regardless of preferences — never remove that rule.
 
 ## Rule 8: Workspace and data flow
 

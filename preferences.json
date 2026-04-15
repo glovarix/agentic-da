@@ -1,5 +1,8 @@
 {
   "commitOutputs": false,
+  "commitWorkspace": false,
+  "commitContext": false,
+  "commitScripts": false,
   "pushAfterCommit": false,
   "confirmBeforeSave": true,
   "confirmBeforeCommit": true,
