@@ -1,0 +1,109 @@
+category,operation
+file_ops,load files
+file_ops,batch processing
+file_ops,format standardization
+file_ops,schema alignment
+file_ops,file deduplication
+file_ops,encoding fixes
+combine,concatenation
+combine,merging joins
+combine,union
+combine,cross join
+combine,post-merge deduplication
+combine,resolve key conflicts
+cleaning,remove duplicates
+cleaning,handle missing values
+cleaning,trim whitespace
+cleaning,case normalization
+cleaning,standardize categories
+cleaning,fix labels across sources
+cleaning,remove special characters
+cleaning,clean diacritics
+cleaning,fix encoding artifacts
+columns,rename columns
+columns,reorder columns
+columns,drop select columns
+columns,add derived columns
+columns,split columns
+columns,combine columns
+columns,change data types
+columns,regex extraction
+transform,normalize minmax
+transform,standardize zscore
+transform,log transform
+transform,encode categories
+transform,binning
+transform,pivot unpivot
+transform,feature engineering
+transform,unit conversion
+datetime,parse dates
+datetime,standardize date formats
+datetime,extract date parts
+datetime,timezone alignment
+datetime,date differences
+datetime,resampling
+datetime,sort by time
+datetime,fill missing intervals
+aggregation,groupby aggregation
+aggregation,rolling averages
+aggregation,cumulative metrics
+aggregation,ranking
+aggregation,percentiles
+filtering,sorting
+filtering,filtering rows
+filtering,top bottom selection
+filtering,outlier removal
+filtering,boolean masking
+validation,null checks
+validation,unique counts
+validation,range validation
+validation,data type validation
+validation,referential integrity
+validation,consistency checks
+text,text processing
+text,tokenization
+text,fuzzy matching
+text,pattern extraction
+viz_prep,reshape wide to long
+viz_prep,flatten or build hierarchies
+viz_prep,enforce one row per element
+viz_prep,type enforcement
+viz_prep,pre aggregation for charts
+viz_prep,time series sorting
+viz_prep,fill missing time points
+viz_prep,align granularity
+viz_prep,category limiting
+viz_prep,label standardization
+viz_prep,ordering fields
+viz_prep,group small categories
+viz_prep,compute percentages ratios
+viz_prep,growth rates
+viz_prep,cumulative values
+viz_prep,rankings for charts
+viz_prep,structure data formats
+viz_prep,optimize size
+viz_prep,add ids labels tooltips
+viz_prep,grouping fields
+viz_prep,sort order columns
+viz_prep,fix visualization issues
+entity_resolution,entity resolution
+entity_resolution,record linkage
+entity_resolution,fuzzy entity matching
+entity_resolution,canonicalization
+entity_resolution,alias mapping
+entity_resolution,deduplication across sources
+entity_resolution,conflict resolution rules
+entity_resolution,source attribution tracking
+entity_resolution,provenance tracking
+entity_resolution,assign unique ids
+entity_resolution,master data creation
+governance,schema evolution handling
+governance,data lineage tracking
+output,export cleaned data
+output,export viz ready data
+output,partition outputs
+pipeline,automation pipelines
+pipeline,logging
+pipeline,version control
+pipeline,scheduling
+

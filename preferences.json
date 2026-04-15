@@ -1,0 +1,11 @@
+{
+  "commitOutputs": false,
+  "pushAfterCommit": false,
+  "confirmBeforeSave": true,
+  "confirmBeforeCommit": true,
+  "confirmBeforeGenerate": true,
+  "runEvidenceCheck": true,
+  "includeSanityCheck": true,
+  "updateSourceRegistry": true,
+  "language": "en-US"
+}
