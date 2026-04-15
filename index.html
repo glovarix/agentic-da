@@ -530,7 +530,7 @@
     <div class="container">
       <div class="hero-badge">
         <div class="hero-badge-dot"></div>
-        Darcy — AI-native data analyst, built for Claude Code
+        Darcy — AI-native data analyst, built for Cursor
       </div>
       <h1>Meet Darcy.<br><span class="accent">Your AI-native data analyst.</span></h1>
       <p class="hero-sub">
@@ -557,8 +557,8 @@
           <div class="stat-label">CSV & XLSX outputs</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num"><span>3</span> tools</div>
-          <div class="stat-label">Claude Code · Cursor · Copilot</div>
+          <div class="stat-num">Cursor</div>
+          <div class="stat-label">Built for Cursor</div>
         </div>
       </div>
     </div>
@@ -622,7 +622,7 @@
         <div class="step">
           <div class="step-num">Approve outputs</div>
           <h3>Elevate to <code>outputs/</code></h3>
-          <p>Once you're happy, outputs are saved with source version tags so anyone can trace exactly what data produced them.</p>
+          <p>Once you're happy, outputs are saved with a run timestamp so anyone can trace exactly when and from what data they were produced.</p>
         </div>
       </div>
     </div>
@@ -820,36 +820,36 @@
       <div class="section-header">
         <div class="section-label">Versioning</div>
         <h2>Always know which data produced which output.</h2>
-        <p class="section-sub">When a new version of a source file arrives, the old one is preserved. Output filenames carry the source version so the lineage is readable at a glance.</p>
+        <p class="section-sub">When a source file changes, the old copy is archived automatically. Every output is stamped with the exact run timestamp so the lineage is traceable at a glance.</p>
       </div>
 
       <div class="version-steps">
         <div class="v-step">
           <div class="v-num">1</div>
           <div class="v-body">
-            <h4>New file arrives</h4>
-            <p>The existing file is renamed with a version suffix: <code>customers_v1.csv</code>. The new file takes the clean name: <code>customers.csv</code> — always the current version.</p>
+            <h4>Change detected automatically</h4>
+            <p>When a source file arrives, Darcy compares it against the existing copy using a file hash. Unchanged files are copied as-is — no version bump. Changed files trigger the archive step.</p>
           </div>
         </div>
         <div class="v-step">
           <div class="v-num">2</div>
           <div class="v-body">
-            <h4>Version log updated</h4>
-            <p>A <code>_versions.md</code> file in the same folder records each version with its date received and a note on what changed.</p>
+            <h4>Prior copy archived with timestamp</h4>
+            <p>The existing copy is renamed with a version number and the import timestamp: <code>customers_v1_2026-04-15_143022.csv</code>. The new file takes the clean name: <code>customers.csv</code> — always the current version.</p>
           </div>
         </div>
         <div class="v-step">
           <div class="v-num">3</div>
           <div class="v-body">
-            <h4>Outputs are tagged</h4>
-            <p>When elevated to <code>outputs/</code>, the filename carries the source version and date: <code>customers-master_v2_2026-04-15.csv</code>. The file also contains a <code>source_versions</code> header note.</p>
+            <h4>Version log updated</h4>
+            <p>A <code>_versions.md</code> file in the same folder records each archived version with its timestamp and a change note.</p>
           </div>
         </div>
         <div class="v-step">
           <div class="v-num">4</div>
           <div class="v-body">
-            <h4>Re-runs are clean</h4>
-            <p>To re-run a flow with new data, copy fresh files from <code>data/</code> into <code>workspace/</code> and reprocess. The workspace is a staging layer — nothing in <code>outputs/</code> is touched until you confirm.</p>
+            <h4>Outputs stamped with run timestamp</h4>
+            <p>Every output file carries the exact timestamp of the run that produced it: <code>customers-master_2026-04-15_143022.csv</code>. Each run is distinct and traceable.</p>
           </div>
         </div>
       </div>
@@ -874,11 +874,13 @@
 │   └── <span class="t-yellow">instructions/</span>       <span class="t-dim">← prep rules for this project</span>
 ├── <span class="t-green">data/</span>                   <span class="t-dim">← source files, never modified</span>
 │   └── {project}/
-│       ├── source_file.csv
-│       └── source_file_v1.csv
+│       └── source_file.csv
 ├── <span class="t-green">workspace/</span>              <span class="t-dim">← Darcy copies data/ files here automatically</span>
 │   ├── working/            <span class="t-dim">← intermediate outputs, inspectable before confirmation</span>
-│   └── reference/          <span class="t-dim">← source lookups used to inform the job</span>
+│   └── reference/          <span class="t-dim">← source lookups; prior versions archived here with timestamp</span>
+│       ├── source_file.csv
+│       ├── source_file_v1_2026-04-15_143022.csv
+│       └── _versions.md
 ├── <span class="t-green">outputs/</span>                <span class="t-dim">← confirmed, reviewed files only</span>
 │   ├── cleaned/            <span class="t-dim">← created when a cleaning job runs</span>
 │   ├── master-lists/       <span class="t-dim">← created when a master list job runs</span>
@@ -1040,30 +1042,16 @@
     <div class="container">
       <div class="section-header center">
         <div class="section-label">Compatibility</div>
-        <h2>Works with your AI coding tool.</h2>
-        <p class="section-sub">Built for Claude Code. Can be adapted for Cursor or GitHub Copilot by copying <code style="font-family:monospace;font-size:14px">CLAUDE.md</code> into the relevant instruction file for that tool.</p>
+        <h2>Built for Cursor.</h2>
+        <p class="section-sub">Place the instruction file at <code style="font-family:monospace;font-size:14px">.cursor/rules/agent-da.mdc</code> and Cursor picks it up automatically.</p>
       </div>
 
       <div class="compat-grid">
-        <div class="compat-card">
-          <div class="compat-icon">⚡</div>
-          <div class="compat-body">
-            <h4>Claude Code</h4>
-            <p>CLAUDE.md</p>
-          </div>
-        </div>
         <div class="compat-card">
           <div class="compat-icon">🖱️</div>
           <div class="compat-body">
             <h4>Cursor</h4>
             <p>.cursor/rules/agent-da.mdc</p>
-          </div>
-        </div>
-        <div class="compat-card">
-          <div class="compat-icon">🐙</div>
-          <div class="compat-body">
-            <h4>GitHub Copilot</h4>
-            <p>.github/copilot-instructions.md</p>
           </div>
         </div>
       </div>

@@ -8,10 +8,10 @@ Built for situations where the real work is cleaning data, aligning schemas, ded
 
 ## Quick start
 
-1. Open the repo in Claude Code (or Cursor / Copilot — see Compatibility below).
+1. Open the repo in Cursor.
 2. Drop source files into `data/` organised by project subfolder.
 3. Paste your prep request — clean this, build a master list, map these codes.
-4. Darcy copies the relevant files to `workspace/working/` automatically before processing.
+4. Darcy copies source files to `workspace/reference/` (lookups) or `workspace/working/` (active processing) automatically.
 5. Review generated files in `workspace/` before approving elevation to `outputs/`.
 6. A sanity check report is saved automatically to `outputs/reports/` after every job.
 
@@ -64,7 +64,10 @@ your-repo/
 │   └── {project}/               <- one subfolder per data project
 ├── workspace/
 │   ├── working/                 <- active files being processed
-│   └── reference/               <- lookup tables and supporting files
+│   └── reference/               <- source lookups; prior versions archived here with timestamp
+│       ├── source_file.csv
+│       ├── source_file_v1_2026-04-15_143022.csv
+│       └── _versions.md
 ├── outputs/                     <- created by the agent on first job run
 │   ├── cleaned/                 <- created when a cleaning job runs
 │   ├── master-lists/            <- created when a master list job runs
@@ -85,7 +88,7 @@ your-repo/
 | --- | --- |
 | `data/` | Original source files, organised by project subfolder. Never modified directly. |
 | `workspace/working/` | Intermediate outputs written during processing. Inspectable before anything is elevated to `outputs/`. |
-| `workspace/reference/` | Source files copied from `data/` and used as lookups to inform the job — not being cleaned themselves. |
+| `workspace/reference/` | Source files copied from `data/` and used as lookups. When a source changes, the prior copy is archived here with a version number and timestamp. A `_versions.md` log tracks every version. |
 | `context/instructions/` | One Markdown file per project defining prep rules, match logic, and standards for that domain. |
 | `capabilities/` | The master list of supported prep operations. Generic and reusable across all projects. |
 | `scripts/` | Processing scripts written by Darcy when a job requires code. Controlled by `commitScripts` in preferences. |
@@ -135,13 +138,12 @@ data/              →   workspace/reference/    (source lookups, untouched)
 
 When a new version of a source file arrives:
 
-- The existing file is renamed with a version suffix: e.g. `customers_v1.csv`
-- The new file takes the clean name: `customers.csv`
-- A `_versions.md` log in the same folder records each version with its date and change note
-- Output filenames include a date tag and source version: e.g. `customers-master_v2_2026-04-15.csv`
+- Darcy compares the incoming file against the existing copy using a file hash. If unchanged, it copies as-is with no version bump.
+- If changed, the existing copy is archived with a version number and the import timestamp: e.g. `customers_v1_2026-04-15_143022.csv`
+- The new file takes the clean name: `customers.csv` — always the current version without a suffix
+- A `_versions.md` log in the same folder records each archived version with its timestamp and a change note
+- Output files are stamped with the run timestamp: e.g. `customers-master_2026-04-15_143022.csv`
 
 ## Compatibility
 
-This framework is built for Claude Code. The instruction file is `CLAUDE.md`.
-
-It can also be adapted for Cursor (`.cursor/rules/`) or GitHub Copilot (`.github/copilot-instructions.md`) by copying the contents of `CLAUDE.md` into the relevant instruction file for that tool.
+This framework is built for Cursor. Place the instruction file at `.cursor/rules/agent-da.mdc` and Cursor will pick it up automatically.
