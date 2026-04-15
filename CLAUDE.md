@@ -101,7 +101,7 @@ Check these sources when relevant:
 - `data/` — source files, never modified directly; copy into `workspace/` before use
 - `workspace/` — staging area for intermediate and active working files; elevate to `outputs/` only after user review
 - `standards.md`
-- `context/instructions/` — if real project instruction files exist alongside `example-project.md`, ignore the example file
+- `context/instructions/` — list all files in this folder. If any file other than `example-project.md` is present, those are the active project instructions; read them and ignore `example-project.md` entirely — do not read it, cite it, or treat it as evidence. Only fall back to `example-project.md` if it is the sole file in the folder.
 - `capabilities/capabilities.csv`
 - existing `outputs/`
 
