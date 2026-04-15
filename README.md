@@ -19,12 +19,12 @@ No forms. No setup scripts. Just local files and clear prompts.
 
 | Request | Output |
 | --- | --- |
-| Clean one source | Cleaned CSV or XLSX in `outputs/cleaned/` |
-| Standardize multiple related sources | Aligned files plus mapping tables |
-| Build a master list | Canonical CSV or XLSX in `outputs/master-lists/` |
-| Review source quality before merge | QA file in `outputs/qa/` |
-| Resolve entity matching | Link table, alias table, or unresolved review file |
-| Any job | Sanity check report in `outputs/reports/` |
+| Clean one source | Cleaned CSV or XLSX → `outputs/cleaned/` |
+| Standardize multiple related sources | Aligned files plus mapping tables → `outputs/mappings/` |
+| Build a master list | Canonical CSV or XLSX → `outputs/master-lists/` |
+| Review source quality before merge | QA file → `outputs/qa/` |
+| Resolve entity matching | Link table, alias table, or unresolved review file → `outputs/mappings/` |
+| Any job | Sanity check report → `outputs/reports/` |
 
 ## Capabilities
 
@@ -51,7 +51,7 @@ Full capability list lives in `capabilities/capabilities.csv`.
 ## Folder structure
 
 ```text
-agentic-da/
+your-repo/
 ├── capabilities/
 │   └── capabilities.csv         <- supported prep operations (generic, reusable)
 ├── context/
@@ -61,19 +61,30 @@ agentic-da/
 ├── workspace/
 │   ├── working/                 <- active files being processed
 │   └── reference/               <- lookup tables and supporting files
-├── outputs/
-│   ├── cleaned/                 <- cleaned single-source files
-│   ├── master-lists/            <- canonical linked entity lists
-│   ├── mappings/                <- code maps, alias maps, link tables
-│   ├── qa/                      <- review files, rejects, unresolved matches
-│   ├── reports/                 <- sanity check reports, one per job
-│   └── xlsx/                    <- spreadsheet exports when needed
-├── sources.md                   <- source registry, keys, and join notes
+├── outputs/                     <- created by the agent on first job run
+│   ├── cleaned/                 <- created when a cleaning job runs
+│   ├── master-lists/            <- created when a master list job runs
+│   ├── mappings/                <- created when a mapping job runs
+│   ├── qa/                      <- created when a QA job runs
+│   └── reports/                 <- created on every job (sanity check report)
 ├── standards.md                 <- naming, code, and linkage standards
 ├── CLAUDE.md                    <- agent instructions
 ├── preferences.json             <- behaviour toggles
 └── README.md
 ```
+
+## Folder guide
+
+| Folder | What goes in it |
+| --- | --- |
+| `data/` | Original source files, organised by project subfolder. Never modified directly. |
+| `workspace/working/` | Active copies of source files being cleaned or processed. |
+| `workspace/reference/` | Lookup tables, code lists, and supporting files that inform the work but are not being cleaned. |
+| `context/instructions/` | One Markdown file per project defining prep rules, match logic, and standards for that domain. |
+| `capabilities/` | The master list of supported prep operations. Generic and reusable across all projects. |
+| `outputs/` | Confirmed, reviewed files only. Subfolders are created by the agent when a job runs. |
+| `standards.md` | Cross-project defaults for naming, codes, entity matching, and date formats. |
+| `preferences.json` | Behavioural toggles — controls confirmations, commits, sanity checks, and language. |
 
 ## Data flow
 
@@ -85,27 +96,20 @@ data/          →   workspace/working/   →   outputs/
 - Files in `data/` are never modified. Copy them into `workspace/` before processing.
 - `workspace/` is the staging layer. All intermediate files live here.
 - Files are only moved to `outputs/` after explicit user review and approval.
+- Output subfolders are created by the agent when a job runs — nothing is pre-built.
 - Every job produces a report in `outputs/reports/` recording what was reviewed, what changed, what files were written, and which source versions were used.
 
 ## Versioning
 
 When a new version of a source file arrives:
 
-- The existing file is renamed with a version suffix: e.g. `LanguageCodes_v1.csv`
-- The new file takes the clean name: `LanguageCodes.csv`
+- The existing file is renamed with a version suffix: e.g. `customers_v1.csv`
+- The new file takes the clean name: `customers.csv`
 - A `_versions.md` log in the same folder records each version with its date and change note
-- Output filenames include a date tag and source version: e.g. `language-master_v2_2026-04-15.csv`
+- Output filenames include a date tag and source version: e.g. `customers-master_v2_2026-04-15.csv`
 
 ## Compatibility
 
-| Tool | Instruction file |
-| --- | --- |
-| Claude Code | `CLAUDE.md` |
-| Cursor | `.cursor/rules/agent-da.mdc` |
-| GitHub Copilot | `.github/copilot-instructions.md` |
+This framework is built for Claude Code. The instruction file is `CLAUDE.md`.
 
-All three instruction files are kept in sync through the pre-commit hook. One-time setup after cloning:
-
-```bash
-git config core.hooksPath .githooks
-```
+It can also be adapted for Cursor (`.cursor/rules/`) or GitHub Copilot (`.github/copilot-instructions.md`) by copying the contents of `CLAUDE.md` into the relevant instruction file for that tool.

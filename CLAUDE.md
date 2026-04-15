@@ -13,7 +13,7 @@ At the start of every session, read `preferences.json` from the project root and
 | `confirmBeforeGenerate` | `true` | Confirm the intended output only when the request is ambiguous. |
 | `runEvidenceCheck` | `true` | Inspect `data/`, `workspace/`, and context files before making claims. |
 | `includeSanityCheck` | `true` | Report a short sanity check in the response after generating files. |
-| `updateSourceRegistry` | `true` | Offer to update `sources.md` when a new source appears. |
+| `updateSourceRegistry` | `true` | Offer to update `standards.md` when new source rules appear. |
 | `language` | `"en-US"` | Writing language. Supported values are `"en-US"` and `"en-GB"`. |
 
 Never modify `preferences.json` unless the user explicitly asks for a setting change.
@@ -48,10 +48,10 @@ If the user asks what you can generate, respond with this summary and do not cre
 
 | Request | Default output |
 | --- | --- |
-| Clean or standardize a source | Cleaned CSV or XLSX in `outputs/cleaned/` |
-| Build a master list | Canonical CSV or XLSX in `outputs/master-lists/` |
-| Build matching logic | Mapping or link table in `outputs/mappings/` |
-| Review merge issues | QA file in `outputs/qa/` |
+| Clean or standardize a source | Cleaned CSV or XLSX |
+| Build a master list | Canonical CSV or XLSX |
+| Build matching logic | Mapping or link table |
+| Review merge issues | QA file |
 | Blocked by missing logic or keys | Short clarification note only if needed |
 
 Confirm the intended output briefly before writing only when the request is ambiguous.
@@ -61,13 +61,13 @@ Confirm the intended output briefly before writing only when the request is ambi
 Read the user's message and apply the first match.
 
 | Priority | Signal words / intent | Output |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | 1 | "clean", "prepare", "standardize", "dedupe", "fix labels", "align schema" | Cleaned source file |
 | 2 | "build master list", "link sources", "canonicalize", "merge entities" | Master list plus link table |
 | 3 | "mapping", "matching rules", "code mapping", "alias list" | Mapping file |
 | 4 | "data quality", "missing values", "duplicates", "outliers", "review before merge" | QA output file |
 | 5 | "clarification", "blocked", "missing data", "need confirmation" | Short clarification note |
-| 9 | None of the above | Invoke Rule 2 | - |
+| 9 | None of the above | Invoke Rule 2 |
 
 ## Rule 2: Ambiguity gatekeeper
 
@@ -97,7 +97,6 @@ Check these sources when relevant:
 
 - `data/` — source files, never modified directly; copy into `workspace/` before use
 - `workspace/` — staging area for intermediate and active working files; elevate to `outputs/` only after user review
-- `sources.md`
 - `standards.md`
 - `context/instructions/`
 - `capabilities/capabilities.csv`
@@ -107,7 +106,7 @@ If no relevant evidence exists, state that clearly and mark the prep work as blo
 
 ## Rule 5: Sanity check report
 
-After every job, save a sanity check report to `outputs/reports/` as `{slug}-report_{date}.md`.
+After every job, save a sanity check report to `outputs/reports/` as `{slug}-report_{date}.md`. Create the folder if it does not exist.
 
 Only include items relevant to the job. Skip items that do not apply.
 
@@ -124,15 +123,15 @@ Keep each item to one short line. Do not pad with items that had nothing to repo
 
 ## Rule 6: Saving files
 
-Default output paths:
+Save all outputs under `outputs/`. The subfolder and filename are determined by the output type. Create the subfolder if it does not already exist — do not require it to be pre-built.
 
-| Output type | Save path | Filename pattern |
+| Output type | Subfolder | Filename pattern |
 | --- | --- | --- |
-| Cleaned file | `outputs/cleaned/` | `{slug}-cleaned.csv` or `.xlsx` |
-| Master list | `outputs/master-lists/` | `{slug}-master.csv` or `.xlsx` |
-| Mapping or link table | `outputs/mappings/` | `{slug}-map.csv` |
-| QA or review file | `outputs/qa/` | `{slug}-qa.csv` or `.xlsx` |
-| Sanity check report | `outputs/reports/` | `{slug}-report_{date}.md` |
+| Cleaned file | `cleaned/` | `{slug}-cleaned.csv` or `.xlsx` |
+| Master list | `master-lists/` | `{slug}-master.csv` or `.xlsx` |
+| Mapping or link table | `mappings/` | `{slug}-map.csv` |
+| QA or review file | `qa/` | `{slug}-qa.csv` or `.xlsx` |
+| Sanity check report | `reports/` | `{slug}-report_{date}.md` |
 
 Prefer CSV by default. Use XLSX when multiple tabs or stakeholder-friendly formatting is useful.
 
@@ -140,7 +139,7 @@ Prefer CSV by default. Use XLSX when multiple tabs or stakeholder-friendly forma
 
 - Do not push anything external by default.
 - Outputs are local-only working files unless the user explicitly asks to commit or push them.
-- Prefer updating `sources.md` and `standards.md` when new source rules appear.
+- Prefer updating `standards.md` when new source rules appear.
 
 ## Rule 8: Workspace and data flow
 
@@ -155,10 +154,10 @@ Prefer CSV by default. Use XLSX when multiple tabs or stakeholder-friendly forma
 When a new version of an existing source file is provided:
 
 - Do not overwrite the existing file.
-- Rename the existing file to append `_v1` (or increment the version if already versioned): e.g. `Ethnologue_LanguageCodes.csv` → `Ethnologue_LanguageCodes_v1.csv`.
+- Rename the existing file to append `_v1` (or increment the version if already versioned): e.g. `customers.csv` → `customers_v1.csv`.
 - Save the new file under the original name so it is always the current version without a suffix.
 - Add a `_versions.md` file in the same folder to log each version with its date received and a short note on what changed (if known).
 - Apply the same versioning logic inside `workspace/` if the same file is re-copied for a new run.
-- When elevating a file from `workspace/` to `outputs/`, append a short version tag to the output filename using the date the output was generated: e.g. `language-master_2026-04-15.csv`.
-- If the source data was versioned, also note the source version in the tag: e.g. `language-master_v2_2026-04-15.csv`.
+- When elevating a file from `workspace/` to `outputs/`, append a short version tag to the output filename using the date the output was generated: e.g. `customers-master_2026-04-15.csv`.
+- If the source data was versioned, also note the source version in the tag: e.g. `customers-master_v2_2026-04-15.csv`.
 - Add a `source_versions` header row or note inside the output file recording which source file(s) and version(s) were used.

@@ -729,8 +729,7 @@
           <div class="section-label" style="margin-bottom:8px;">Generic layer</div>
           <div style="font-size:14px; color:var(--text-muted); line-height:1.7;">
             <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">capabilities/capabilities.csv</code><br>
-            <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">standards.md</code><br>
-            <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">sources.md</code>
+            <code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-600);">standards.md</code>
           </div>
         </div>
         <div style="flex-shrink:0; color:var(--primary-500); font-size:24px; align-self:center;">+</div>
@@ -791,11 +790,6 @@
             <td><span class="path">outputs/qa/</span></td>
           </tr>
           <tr>
-            <td>Stakeholder-friendly workbook</td>
-            <td>XLSX export</td>
-            <td><span class="path">outputs/xlsx/</span></td>
-          </tr>
-          <tr>
             <td>Any job</td>
             <td>Sanity check report</td>
             <td><span class="path">outputs/reports/</span></td>
@@ -819,7 +813,7 @@
           <div class="v-num">1</div>
           <div class="v-body">
             <h4>New file arrives</h4>
-            <p>The existing file is renamed with a version suffix: <code>LanguageCodes_v1.csv</code>. The new file takes the clean name: <code>LanguageCodes.csv</code> — always the current version.</p>
+            <p>The existing file is renamed with a version suffix: <code>customers_v1.csv</code>. The new file takes the clean name: <code>customers.csv</code> — always the current version.</p>
           </div>
         </div>
         <div class="v-step">
@@ -833,7 +827,7 @@
           <div class="v-num">3</div>
           <div class="v-body">
             <h4>Outputs are tagged</h4>
-            <p>When elevated to <code>outputs/</code>, the filename carries the source version and date: <code>language-master_v2_2026-04-15.csv</code>. The file also contains a <code>source_versions</code> header note.</p>
+            <p>When elevated to <code>outputs/</code>, the filename carries the source version and date: <code>customers-master_v2_2026-04-15.csv</code>. The file also contains a <code>source_versions</code> header note.</p>
           </div>
         </div>
         <div class="v-step">
@@ -858,7 +852,7 @@
 
       <div class="tree-wrap">
         <pre>
-<span class="t-blue">agentic-da/</span>
+<span class="t-blue">your-repo/</span>
 ├── <span class="t-green">capabilities/</span>           <span class="t-dim">← generic, reusable across any project</span>
 │   └── capabilities.csv
 ├── <span class="t-green">context/</span>                <span class="t-dim">← project-specific only</span>
@@ -870,18 +864,61 @@
 ├── <span class="t-green">workspace/</span>              <span class="t-dim">← staging area, copy data/ files here</span>
 │   ├── working/            <span class="t-dim">← active files being processed</span>
 │   └── reference/          <span class="t-dim">← lookup tables and supporting files</span>
-├── <span class="t-green">outputs/</span>                <span class="t-dim">← confirmed, reviewed files only</span>
-│   ├── cleaned/
-│   ├── master-lists/
-│   ├── mappings/
-│   ├── qa/
-│   ├── reports/            <span class="t-dim">← sanity check report per job</span>
-│   └── xlsx/
-├── sources.md              <span class="t-dim">← source registry and join notes</span>
+├── <span class="t-green">outputs/</span>                <span class="t-dim">← created by the agent on first job run</span>
+│   ├── cleaned/            <span class="t-dim">← created when a cleaning job runs</span>
+│   ├── master-lists/       <span class="t-dim">← created when a master list job runs</span>
+│   ├── mappings/           <span class="t-dim">← created when a mapping job runs</span>
+│   ├── qa/                 <span class="t-dim">← created when a QA job runs</span>
+│   └── reports/            <span class="t-dim">← created on every job</span>
 ├── standards.md            <span class="t-dim">← naming and code standards</span>
 ├── CLAUDE.md               <span class="t-dim">← agent instructions</span>
 └── preferences.json        <span class="t-dim">← behaviour toggles</span>
         </pre>
+      </div>
+
+      <div style="margin-top:48px;">
+        <table class="output-table">
+          <thead>
+            <tr>
+              <th>Folder</th>
+              <th>What goes in it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="path">data/</span></td>
+              <td>Original source files, organised by project subfolder. Never modified directly.</td>
+            </tr>
+            <tr>
+              <td><span class="path">workspace/working/</span></td>
+              <td>Active copies of source files being cleaned or processed.</td>
+            </tr>
+            <tr>
+              <td><span class="path">workspace/reference/</span></td>
+              <td>Lookup tables, code lists, and supporting files that inform the work but are not being cleaned.</td>
+            </tr>
+            <tr>
+              <td><span class="path">context/instructions/</span></td>
+              <td>One Markdown file per project defining prep rules, match logic, and standards for that domain.</td>
+            </tr>
+            <tr>
+              <td><span class="path">capabilities/</span></td>
+              <td>The master list of supported prep operations. Generic and reusable across all projects.</td>
+            </tr>
+            <tr>
+              <td><span class="path">outputs/</span></td>
+              <td>Confirmed, reviewed files only. Subfolders are created by the agent when a job runs.</td>
+            </tr>
+            <tr>
+              <td><span class="path">standards.md</span></td>
+              <td>Cross-project defaults for naming, codes, entity matching, and date formats.</td>
+            </tr>
+            <tr>
+              <td><span class="path">preferences.json</span></td>
+              <td>Behavioural toggles — controls confirmations, commits, sanity checks, and language.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -892,7 +929,7 @@
       <div class="section-header center">
         <div class="section-label">Compatibility</div>
         <h2>Works with your AI coding tool.</h2>
-        <p class="section-sub">All three instruction files are kept in sync automatically through the pre-commit hook.</p>
+        <p class="section-sub">Built for Claude Code. Can be adapted for Cursor or GitHub Copilot by copying <code style="font-family:monospace;font-size:14px">CLAUDE.md</code> into the relevant instruction file for that tool.</p>
       </div>
 
       <div class="compat-grid">
@@ -919,10 +956,6 @@
         </div>
       </div>
 
-      <div style="margin-top:32px;background:var(--zinc-950);border-radius:12px;border:1px solid var(--zinc-800);padding:20px 28px;">
-        <p style="font-size:12px;color:var(--zinc-500);margin-bottom:8px;font-family:'JetBrains Mono',monospace;">One-time setup after cloning</p>
-        <code style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;">git config core.hooksPath .githooks</code>
-      </div>
     </div>
   </section>
 
