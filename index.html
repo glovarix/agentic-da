@@ -613,7 +613,7 @@
         <div class="step">
           <div class="step-num">Give a plain request</div>
           <h3>Describe the prep goal</h3>
-          <p>Say what you need — clean this, dedupe that, build a master list, map these codes. No forms, no config files. For complex operations, Darcy writes a Python script, runs it, and saves it to <code>scripts/</code> for later reuse.</p>
+          <p>Say what you need — clean this, dedupe that, build a master list, map these codes. No forms, no config files. For complex operations, Darcy checks <code>scripts/</code> for an existing script first — tweaking or forking it if relevant, writing from scratch only if nothing fits.</p>
         </div>
         <div class="step">
           <div class="step-num">Inspect workspace</div>
@@ -889,7 +889,7 @@
 │   ├── qa/                 <span class="t-dim">← created when a QA job runs</span>
 │   ├── discarded/          <span class="t-dim">← dropped records, every job, never silent</span>
 │   └── reports/            <span class="t-dim">← sanity check report, every job</span>
-├── <span class="t-green">scripts/</span>                <span class="t-dim">← processing scripts written by Darcy</span>
+├── <span class="t-green">scripts/</span>                <span class="t-dim">← scripts reused, tweaked, or forked before new ones are written</span>
 ├── standards.md            <span class="t-dim">← naming and code standards</span>
 ├── CLAUDE.md               <span class="t-dim">← agent instructions</span>
 └── preferences.json        <span class="t-dim">← behaviour toggles</span>
@@ -919,7 +919,7 @@
             </tr>
             <tr>
               <td><span class="path">scripts/</span></td>
-              <td>Processing scripts written by Darcy when a job requires code. Controlled by commitScripts in preferences.</td>
+              <td>Processing scripts written by Darcy. Before writing a new one, Darcy inspects this folder and tweaks, forks, or writes from scratch depending on fit. Controlled by commitScripts in preferences.</td>
             </tr>
             <tr>
               <td><span class="path">context/instructions/</span></td>

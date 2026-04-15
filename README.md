@@ -19,6 +19,14 @@ No forms. No dashboards. Just local files and clear prompts.
 
 For complex operations — large file processing, multi-source joins, entity resolution at scale — Darcy writes a Python script, runs it, and saves it to `scripts/` for later reuse. Simple jobs produce output files directly with no code written.
 
+Before writing any new script, Darcy inspects `scripts/` and applies a three-tier decision:
+
+| Fit | Action |
+| --- | --- |
+| Same domain, small change | Tweak in place — state what changes and why |
+| Same domain, meaningfully different job | Fork it — new descriptive name, original untouched |
+| Nothing relevant | Write from scratch |
+
 ## What it produces
 
 | Request | Output |
@@ -75,7 +83,7 @@ your-repo/
 │   ├── qa/                      <- created when a QA job runs
 │   ├── discarded/               <- records dropped every job (no identifier, failed validation)
 │   └── reports/                 <- created on every job (sanity check report)
-├── scripts/                     <- processing scripts written by Darcy
+├── scripts/                     <- processing scripts; reused, tweaked, or forked before new ones are written
 ├── standards.md                 <- naming, code, and linkage standards
 ├── CLAUDE.md                    <- agent instructions
 ├── preferences.json             <- behaviour toggles
@@ -91,7 +99,7 @@ your-repo/
 | `workspace/reference/` | Source files copied from `data/` and used as lookups. When a source changes, the prior copy is archived here with a version number and timestamp. A `_versions.md` log tracks every version. |
 | `context/instructions/` | One Markdown file per project defining prep rules, match logic, and standards for that domain. |
 | `capabilities/` | The master list of supported prep operations. Generic and reusable across all projects. |
-| `scripts/` | Processing scripts written by Darcy when a job requires code. Controlled by `commitScripts` in preferences. |
+| `scripts/` | Processing scripts written by Darcy when a job requires code. Before writing a new script, Darcy checks here and proposes tweaking or forking an existing one if relevant. Controlled by `commitScripts` in preferences. |
 | `outputs/` | Confirmed, reviewed files only. Subfolders are created by the agent when a job runs. |
 | `outputs/discarded/` | Records dropped during every job — no identifier, failed validation, or unresolvable conflict. Never silently lost. |
 | `standards.md` | Cross-project defaults for naming, codes, entity matching, and date formats. |
