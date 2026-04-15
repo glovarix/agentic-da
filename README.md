@@ -8,7 +8,7 @@ Built for situations where the real work is cleaning data, aligning schemas, ded
 
 ## Quick start
 
-1. Open the repo in Cursor.
+1. Open the repo in Claude Code.
 2. Drop source files into `data/` organised by project subfolder.
 3. Paste your prep request — clean this, build a master list, map these codes.
 4. Darcy copies source files to `workspace/reference/` (lookups) or `workspace/working/` (active processing) automatically.
@@ -146,4 +146,6 @@ When a new version of a source file arrives:
 
 ## Compatibility
 
-This framework is built for Cursor. Place the instruction file at `.cursor/rules/agent-da.mdc` and Cursor will pick it up automatically.
+This framework is built for Claude Code. The instruction file is `CLAUDE.md` — Claude Code picks it up automatically.
+
+It can be extended to other AI coding tools (Cursor, GitHub Copilot) by copying the contents of `CLAUDE.md` into the relevant instruction file for that tool.
