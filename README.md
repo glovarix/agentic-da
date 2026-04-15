@@ -1,4 +1,4 @@
-# Meet Darcy.
+# Meet Darcy
 
 Your AI-native data analyst.
 
