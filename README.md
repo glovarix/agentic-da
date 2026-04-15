@@ -15,7 +15,9 @@ Built for situations where the real work is cleaning data, aligning schemas, ded
 5. Review generated files in `workspace/` before approving elevation to `outputs/`.
 6. A sanity check report is saved automatically to `outputs/reports/` after every job.
 
-No forms. No setup scripts. Just local files and clear prompts.
+No forms. No dashboards. Just local files and clear prompts.
+
+For complex operations — large file processing, multi-source joins, entity resolution at scale — Darcy writes a Python script, runs it, and saves it to `scripts/` for later reuse. Simple jobs produce output files directly with no code written.
 
 ## What it produces
 
