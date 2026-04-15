@@ -9,9 +9,9 @@ Built for situations where the real work is cleaning data, aligning schemas, ded
 ## Quick start
 
 1. Open the repo in Claude Code (or Cursor / Copilot — see Compatibility below).
-2. Drop source files into `data/` organized by project subfolder.
-3. Copy files you want to work on into `workspace/working/`.
-4. Paste your prep request — clean this, build a master list, map these codes.
+2. Drop source files into `data/` organised by project subfolder.
+3. Paste your prep request — clean this, build a master list, map these codes.
+4. Darcy copies the relevant files to `workspace/working/` automatically before processing.
 5. Review generated files in `workspace/` before approving elevation to `outputs/`.
 6. A sanity check report is saved automatically to `outputs/reports/` after every job.
 

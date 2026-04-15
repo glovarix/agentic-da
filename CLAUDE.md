@@ -154,7 +154,7 @@ When `commitOutputs` is set back to `false`, restore the ignore rule. `data/` an
 
 ## Rule 8: Workspace and data flow
 
-- `data/` holds source files. Never modify them. Copy into `workspace/` before any processing.
+- `data/` holds source files. Never modify them. Automatically copy the relevant files into `workspace/working/` before any processing — the user should not need to do this manually.
 - `workspace/` is a staging area. Use `workspace/working/` for active processing files and `workspace/reference/` for lookup tables, code lists, or supporting files that inform the work but are not being cleaned themselves.
 - Do not elevate files from `workspace/` to `outputs/` without explicit user confirmation.
 - If a user wants to re-run a flow, copy fresh files from `data/` into `workspace/` and re-process from there.
