@@ -29,7 +29,10 @@ data/**
 
 # Controlled by preferences.json — Darcy updates this file when settings change
 context/**
+!context/
+!context/instructions/
 !context/instructions/.gitkeep
+!context/instructions/example-project.md
 
 outputs/**
 !outputs/.gitkeep
