@@ -1,0 +1,39 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+
+# Node
+node_modules/
+.env.local
+
+# Logs
+*.log
+
+# Project data — ignored by default
+# Set commitOutputs = true in preferences.json and Darcy will update this file
+data/**
+!data/.gitkeep
+
+context/**
+!context/instructions/.gitkeep
+
+outputs/**
+!outputs/.gitkeep
+
+# Workspace staging files are always local
+workspace/working/**
+workspace/reference/**

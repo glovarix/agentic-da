@@ -141,6 +141,17 @@ Prefer CSV by default. Use XLSX when multiple tabs or stakeholder-friendly forma
 - Outputs are local-only working files unless the user explicitly asks to commit or push them.
 - Prefer updating `standards.md` when new source rules appear.
 
+### .gitignore sync
+
+`data/`, `context/`, and `outputs/` are ignored by default — no project data leaves the machine unless explicitly enabled.
+
+When `commitOutputs` is changed to `true` in `preferences.json`, update `.gitignore` to unignore `outputs/`:
+
+- Remove or comment out the `outputs/**` line
+- Add `!outputs/**` if needed to negate a parent rule
+
+When `commitOutputs` is set back to `false`, restore the ignore rule. `data/` and `context/` are always ignored regardless of preferences — never remove those rules.
+
 ## Rule 8: Workspace and data flow
 
 - `data/` holds source files. Never modify them. Copy into `workspace/` before any processing.
